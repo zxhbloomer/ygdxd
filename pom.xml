@@ -16,6 +16,7 @@
     <modules>
         <module>mybatis-generator</module>
         <module>ygdxd-core</module>
+        <module>ygdxd-web</module>
     </modules>
 
     <properties>
@@ -46,7 +47,10 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <!--<dependency>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+            <!--</dependency>-->
             <!--mybatis-->
             <dependency>
                 <groupId>org.mybatis</groupId>
