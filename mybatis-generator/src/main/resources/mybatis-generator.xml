@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 配置生成器 -->
+<generatorConfiguration>
+    <!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用${propertyKey}的方式来引用配置项 resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties
+        url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties. 注意，两个属性只能选址一个; -->
+    <!-- 另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用 -->
+    <!--<properties resource="mysql.properties"></properties>-->
+    <properties resource="mysql.properties"></properties>
+    <context id="MysqlContext">
+        <!-- 这里要注意配置顺序 -->
+        <!-- property* -->
+        <!-- plugin* -->
+        <!-- commentGenerator? -->
+        <!-- (connectionFactory|jdbcConnection) -->
+        <!-- javaTypeResolver? -->
+        <!-- javaModelGenerator -->
+        <!-- sqlMapGenerator? -->
+        <!-- javaClientGenerator? -->
+        <!-- table+ -->
+        <property name="javaFileEncoding" value="utf-8"></property>
+        <!-- 如果你想使用模板来定制生成的java文件和xml文件的样式，你可以通过指定这两个属性的值来实现 -->
+        <!-- <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/> -->
+        <!-- <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/> -->
+
+        <property name="beginningDelimiter" value="${delimiter}"></property>
+        <property name="endingDelimiter" value="${delimiter}"/>
+
+        <!-- 为生成的Java模型类添加序列化接口，并生成serialVersionUID字段 -->
+        <plugin type="com.ygdxd.mybatis.plugins.adapter.MySerializablePlugin"></plugin>
+
+        <!-- 为Mapper类中生成的方法添加注释 -->
+        <!--<plugin type="com.ygdxd.mybatis.plugins.adapter.MapperPluginAdapter">-->
+            <!--<property name="mappers" value="com.ygdxd."></property>-->
+        <!--</plugin>-->
+
+        <!-- 自定义插件：生成注释插件 -->
+        <commentGenerator type="com.ygdxd.mybatis.plugins.generator.MyCommentGenerator">
+            <!-- 是否去除自动生成的注释：true-是，false-否 -->
+            <property name="suppressAllComments" value="false"/>
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="${driverClass}"
+                        connectionURL="${connectionURL}" userId="${userId}" password="${password}">
+            <!-- 获取不到表字段注释的问题：针对oracle数据库 -->
+            <property name="remarksReporting" value="true"></property>
+            <!-- 获取不到表字段注释的问题：针对mysql数据库 -->
+            <property name="useInformationSchema" value="true"></property>
+        </jdbcConnection>
+
+        <!-- java类型处理器
+                用于处理DB中的类型到Java中的类型，默认使用JavaTypeResolverDefaultImpl；
+                注意一点，默认会先尝试使用Integer，Long，Short等来对应DECIMAL和 NUMERIC数据类型；
+        -->
+        <!--
+            true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
+            false：默认,
+                scale>0;length>18：使用BigDecimal;
+                scale=0;length[10,18]：使用Long；
+                scale=0;length[5,9]：使用Integer；
+                scale=0;length<5：使用Short；
+         -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+
+
+        <javaModelGenerator targetPackage="${package.pojo}" targetProject="${target.project}/src/main/java">
+            <!-- 自动为每一个生成空参构造函数，和一个带所有field的构造函数。默认：false -->
+            <property name="constructorBased" value="true"></property>
+        </javaModelGenerator>
+
+        <!-- mapper.xml 映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="${package.mapper}" targetProject="${target.project}/src/main/resources"></sqlMapGenerator>
+        
+        <!-- mapper 类生成的位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${package.mapper}" targetProject="${target.project}/src/main/java"></javaClientGenerator>
+
+        <!-- tables -->
+        <table tableName="t_user"></table>
+    </context>
+</generatorConfiguration>
